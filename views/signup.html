@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>ĐĂNG KÝ</h1>
+    <input type="email" id="email" placeholder="email" />
+    <span id="emailValidate" style="display: none; color: red;"> </span>
+    <span id="passwordValidate" style="display: none; color: red;"> </span>
+    <input type="password" id="password" placeholder="Password" />
+    <button id="btn-signin">ĐĂNG KÝ</button>
+</body>
+
+<script>
+    $("#btn-signin").click(function () {
+        var $isEmail = false;
+        var $isPassword = false
+        var $email = $("#email").val();
+        var $password = $("#password").val();
+        if ($email == "") {
+            $("#emailValidate").html("");
+            $("#emailValidate").css("display", "block").
+                $isEmail = false;
+        } else if ($email.indexOf("@") <= 0) {
+            $("#emailValidate").html("");
+            $("#emailValidate").css("display", "block").html("Email khong dung dinh dang");
+            $isEmail = false;
+        } else {
+            $("#emailValidate").css("display", "none").html("");
+            $isEmail = true;
+        }
+        if ($password.length < 6 && $password.length > 0) {
+            $("#passwordValidate").html("");
+            $("#passwordValidate").css("display", "block").html("mat khau phai lon hon 6 ky tu");
+            $isPassword = false
+        } else if ($password == "") {
+            $("#passwordValidate").html("");
+            $("#passwordValidate").css("display", "block").html("tk,mk ko duoc de trong");
+            $isPassword = false
+        } else {
+            $("#passwordValidate").css("display", "none").html("");
+            $isPassword = true;
+        }
+
+        if ($isEmail && $isPassword) {
+            $('#btn-signin').click(function () {
+
+                $.ajax({
+                    url: "/signup",
+                    method: "post",
+                    data: {
+                        email: $('#email').val(),
+                        password: $('#password').val()
+                    }
+                }).then(function (data) {
+                    alert("dang ki thanh cong")
+                    window.location.href = "/signin"
+                })
+            })
+        }
+    })
+
+
+</script>
+
+</html>

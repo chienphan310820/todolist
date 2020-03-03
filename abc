@@ -1,0 +1,8 @@
+1, dang nhap 
+2, token = jwt ma hoa du lieu ng dung => trả về cho người dùng token
+3, tạo middleware: 
+-file mã hóa
+-giải mã
+-thong tin người dùng 
+-res.local= thogn tin mã hóa ngời dùng
+4, tạo API: 

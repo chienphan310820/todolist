@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>ĐĂNG NHẬP</h1>
+    <input type="email" id="email" placeholder="email" />
+    <span id="emailValidate" style="display: none; color: red;"> </span>
+    <span id="passwordValidate" style="display: none; color: red;"> </span>
+    <input type="password" id="password" placeholder="Password" />
+    <button id="btn-dangki">ĐĂNG KÝ</button>
+    <button id="btn" type='button'>ĐĂNG NHẬP</button>
+</body>
+<script>
+    // function getAcc(value) {
+
+    $("#btn").click(function () {
+        var $isEmail = false;
+        var $isPassword = false
+        var $email = $("#email").val();
+        var $password = $("#password").val();
+        if ($email == "") {
+            $("#emailValidate").html("");
+            $("#emailValidate").css("display", "block").
+            $isEmail = false;
+        } else if ($email.indexOf("@") <= 0) {
+            $("#emailValidate").html("");
+            $("#emailValidate").css("display", "block").html("Email khong dung dinh dang");
+            $isEmail = false;
+        } else {
+            $("#emailValidate").css("display", "none").html("");
+            $isEmail = true;
+        }
+        if ($password.length < 6 && $password.length > 0) {
+            $("#passwordValidate").html("");
+            $("#passwordValidate").css("display", "block").html("mat khau phai lon hon 6 ky tu");
+            $isPassword = false
+        } else if ($password==""){ 
+            $("#passwordValidate").html("");
+            $("#passwordValidate").css("display", "block").html("tk,mk ko duoc de trong");
+            $isPassword = false
+        } else {
+            $("#passwordValidate").css("display", "none").html("");
+            $isPassword = true;
+        }
+
+        if ($isEmail && $isPassword) {
+            $.ajax({
+                url: "/signin",
+                method: "post",
+                data: {
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                }
+            }).then(function (data) {
+                // res.json("dang nhap thanh cong")
+                cookie("token", data, 1)
+                window.location.href = "/"
+            })
+
+
+
+        }
+
+        $('#btn-dangki').click(function () {
+            window.location.href = "/signup"
+        })
+
+
+    })
+
+
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+
+    var token = getCookie("token");
+
+
+
+    // console.log(token)
+
+    function cookie(key, value, timeExpries) {
+        let newDay = new Date()
+        newDay.setTime(timeExpries * 1000 * 60 * 60 * 24 + newDay.getTime())
+        return document.cookie = `${key}=${value};expries=${newDay.toUTCString()}`
+    }
+</script>
+
+</html>
